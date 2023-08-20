@@ -6,6 +6,7 @@ LABEL maintainer="Your Name <your.email@example.com>"
 
 # Remove the default Nginx welcome page
 RUN rm -rf /usr/share/nginx/html/*
+RUN ls -l ./static-content
 
 # Create a non-root user and group with the same IDs as the host user
 ARG UID=1000
@@ -17,9 +18,14 @@ WORKDIR /usr/share/nginx/html
 
 # Copy your static content into the Nginx document root
 COPY --chown=myuser:myuser ./static-content .
+COPY ./static-content /usr/share/nginx/html
 
 # Expose port 80 to allow incoming HTTP traffic
 EXPOSE 80
 
 # Start Nginx when the container runs
 CMD ["nginx", "-g", "daemon off;"]
+
+#RUN ls -l ./static-content
+#COPY ./static-content /usr/share/nginx/html
+
